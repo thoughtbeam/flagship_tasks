@@ -1,4 +1,6 @@
 Tasks::Application.routes.draw do |map|
+  resources :tasks
+
   resources :projects
 
   resources :users
