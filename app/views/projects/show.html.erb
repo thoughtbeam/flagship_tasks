@@ -1,0 +1,20 @@
+<p class="notice"><%= notice %></p>
+
+<p>
+  <b>Group:</b>
+  <%= @project.group_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @project.name %>
+</p>
+
+<p>
+  <b>Active:</b>
+  <%= @project.active %>
+</p>
+
+
+<%= link_to 'Edit', edit_project_path(@project) %> |
+<%= link_to 'Back', projects_path %>
