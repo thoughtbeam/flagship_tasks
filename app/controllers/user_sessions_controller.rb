@@ -43,6 +43,6 @@ class UserSessionsController < ApplicationController
   # DELETE /user_sessions/1.xml
   def destroy
     current_user_session.destroy
-    redirect_to(root_url, :notice => "Login Successful!")
+    redirect_to(root_url, :notice => "Logout Successful!")
   end
 end

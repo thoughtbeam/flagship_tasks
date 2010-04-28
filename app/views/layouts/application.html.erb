@@ -9,19 +9,31 @@
 <body>
   <div class="wrapper">
     <div class="topbar">
-      <% if !current_user %>
-        <%= link_to "Register", new_user_path %>
-        <%= link_to "Login", new_user_session_path %>
-      <% else %>
-        <%= link_to "My Profile", user_path(current_user) %>
-        <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
-      <% end %>
+       <span class="right">
+        <% if !current_user %>
+          <%= link_to "Register", new_user_path %> | 
+          <%= link_to "Login", new_user_session_path %>
+        <% else %>
+          <%= link_to "My Profile", user_path(current_user) %> | 
+          <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
+        <% end %>
+      </span>
+      <span class="left">
+        <strong><%= link_to 'Flagship Tasks', root_url %></strong>:
+        <%= link_to 'Projects', projects_url%> | 
+        <%= link_to 'Groups', groups_url %> |
+        <%= link_to 'Users', users_url %>
+      </span>
+      <div style="clear:both"></div>
     </div>
-      <p class="notice"><%= notice %></p>
-      <div class="content">
-        <%= yield %>
-      </div>
+    <p class="notice"><%= notice %></p>
+    <div class="content">
+      <%= yield %>
     </div>
+    <div class="footer">
+        <span class="right"><%= link_to "Source Code", 'http://github.com/thoughtbeam/flagship_tasks'%> at github</span>
+        <span class="left">Flagship Tasks is a project for SDD at RPI by the Thoughtbeam Group.</span>
+      <div style="clear:both"></div>
   </div>
 
 </body>
