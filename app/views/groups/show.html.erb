@@ -9,5 +9,32 @@
 </p>
 
 
+<p>
+<% if @owners.nil? || @owners.empty? %>
+  <em>This group has no owners.</em>
+<% else %>
+  <b>Owners (users who control the group):</b>
+  <ul>
+    <% @owners.each do |u| %>
+      <li><%= link_to u.name, u %> (<%= make_demote_link(@group,u) %>)</li>
+    <% end %>
+  </ul>
+<% end %>
+</p>
+
+<p>
+<% if @users.nil? || @users.empty? %>
+  <em>There are no additional users.</em>
+<% else %>
+  <b>Members:</b>
+  <ul>
+    <% @users.each do |u| %>
+      <li><%= link_to u.name, u %> (<%= make_owner_link(@group, u) %> | <%= make_remove_link(@group,u) %>) </li>
+    <% end %>
+  </ul>
+<% end %>
+</p>
+
+
 <%= link_to 'Edit', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %>

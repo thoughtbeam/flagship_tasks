@@ -15,6 +15,17 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
 
+    # Collect users and owners, we'll want to display them.
+    @users = @group.users
+    @owners = @group.owners
+
+    # Don't need to display an owner as a user, too!
+    @users.delete_if { |u| @owners.include? u }
+
+    # We'll also want to display our projects.
+    @projects = @group.projects
+
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @group }
