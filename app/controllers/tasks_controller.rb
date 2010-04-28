@@ -35,12 +35,26 @@ class TasksController < ApplicationController
   # GET /tasks/1/edit
   def edit
     @task = Task.find(params[:id])
+    if !@task.project.group.users.include?(current_user) and !current_user.is_admin
+        respond_to do |format|
+            format.html { redirect_to(@task, :notice => "You need to be a member of this group to do that.") }
+            format.xml { render :status => :unprocessable_entity }
+        end
+        return
+    end
   end
 
   # POST /tasks
   # POST /tasks.xml
   def create
     @task = Task.new(params[:task])
+    if !@task.project.group.users.include?(current_user) and !current_user.is_admin
+        respond_to do |format|
+            format.html { redirect_to(@task.project, :notice => "You need to be a member of this group to do that.") }
+            format.xml { render :status => :unprocessable_entity }
+        end
+        return
+    end
 
     respond_to do |format|
       if @task.save
@@ -59,7 +73,10 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
 
     respond_to do |format|
-      if @task.update_attributes(params[:task])
+      if !@task.project.group.users.include?(current_user) and !current_user.is_admin
+        format.html { redirect_to(@task, :notice => "You need to be a member of this group to do that.") }
+        format.xml { render :status => :unprocessable_entity }
+      elsif @task.update_attributes(params[:task])
         format.html { redirect_to(@task, :notice => 'Task was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -73,6 +90,13 @@ class TasksController < ApplicationController
   # DELETE /tasks/1.xml
   def destroy
     @task = Task.find(params[:id])
+    if !current_user or !current_user.is_admin
+        respond_to do |format|
+            format.html { redirect_to(@task, :notice => "You don't have permission to do that.") }
+            format.xml { render :status => :unprocessable_entity }
+        end
+        return
+    end
     @task.destroy
 
     respond_to do |format|

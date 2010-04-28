@@ -35,6 +35,13 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.find(params[:id])
+    if !@project.group.owners.include?(current_user) and !current_user.is_admin
+        respond_to do |format|
+            format.html { redirect_to(@task, :notice => "You need to be an owner of this group to do that.") }
+            format.xml { render :status => :unprocessable_entity }
+        end
+        return
+    end
   end
 
   # POST /projects
@@ -43,7 +50,10 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
 
     respond_to do |format|
-      if @project.save
+      if !@project.group.owners.include?(current_user) and !current_user.is_admin
+        format.html { redirect_to(@task, :notice => "You need to be an owner of this group to do that.") }
+        format.xml { render :status => :unprocessable_entity }
+      elsif @project.save
         format.html { redirect_to(@project, :notice => 'Project was successfully created.') }
         format.xml  { render :xml => @project, :status => :created, :location => @project }
       else
@@ -59,7 +69,10 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
 
     respond_to do |format|
-      if @project.update_attributes(params[:project])
+      if !@project.group.owners.include?(current_user) and !current_user.is_admin
+        format.html { redirect_to(@task, :notice => "You need to be an owner of this group to do that.") }
+        format.xml { render :status => :unprocessable_entity }
+      elsif @project.update_attributes(params[:project])
         format.html { redirect_to(@project, :notice => 'Project was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -73,6 +86,13 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1.xml
   def destroy
     @project = Project.find(params[:id])
+    if !current_user or !current_user.is_admin
+        respond_to do |format|
+            format.html { redirect_to(@project, :notice => "You don't have permission to do that.") }
+            format.xml { render :status => :unprocessable_entity }
+        end
+        return
+    end
     @project.destroy
 
     respond_to do |format|
