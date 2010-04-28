@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Groups: <%= controller.action_name %></title>
+  <%= stylesheet_link_tag 'scaffold' %>
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="topbar">
+      <% if !current_user %>
+        <%= link_to "Register", new_user_path %>
+        <%= link_to "Login", new_user_session_path %>
+      <% else %>
+        <%= link_to "My Profile", user_path(current_user) %>
+        <%= link_to "Logout", user_session_path, :method => :delete, :confirm => "Are you sure you want to logout?" %>
+      <% end %>
+    </div>
+      <p class="notice"><%= notice %></p>
+      <div class="content">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

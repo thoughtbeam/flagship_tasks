@@ -1,5 +1,14 @@
 <% form_for(@user) do |f| %>
-  <%= f.error_messages %>
+  <% if @user.errors.any? %>
+  <div id="errorExplanation">
+    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <ul>
+    <% @user.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
 
   <div class="field">
     <%= f.label :username %><br />
@@ -20,6 +29,14 @@
   <div class="field">
     <%= f.label :is_admin %><br />
     <%= f.check_box :is_admin %>
+  </div>
+   <div class="field">
+    <%= f.label :password %><br />
+    <%= f.text_field :password %>
+   <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.text_field :password_confirmation %>
+  </div>
   </div>
   <div class="actions">
     <%= f.submit %>

@@ -16,6 +16,9 @@ class User < ActiveRecord::Base
         # Provide default ordering for views
         default_scope :order => 'last, first'
 
+        # Provide the hook into the authlogic user module.
+        acts_as_authentic
+
         # Provide an easy way to get at the fullname.
         def name
           first + " " + last
