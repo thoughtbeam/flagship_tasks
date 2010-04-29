@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.xml
+  # Displays an index of all groups in the system.
   def index
     @groups = Group.all
 
@@ -12,6 +13,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   # GET /groups/1.xml
+  # Displays the details of a single group given by ID.
   def show
     @group = Group.find(params[:id])
 
@@ -34,6 +36,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/new
   # GET /groups/new.xml
+  # Offers the user a form for creating a new group.
   def new
     @group = Group.new
 
@@ -44,12 +47,15 @@ class GroupsController < ApplicationController
   end
 
   # GET /groups/1/edit
+  # Offers the user a form for modifying a group given by ID.
   def edit
     @group = Group.find(params[:id])
   end
 
   # POST /groups
   # POST /groups.xml
+  # Accepts the results of the form created in new and tries
+  # to use it to create a new group.
   def create
     @group = Group.new(params[:group])
 
@@ -66,6 +72,8 @@ class GroupsController < ApplicationController
 
   # PUT /groups/1
   # PUT /groups/1.xml
+  # Accepts the results of the form created in edit and tries
+  # to use it to modify the given group.
   def update
     @group = Group.find(params[:id])
 
@@ -82,6 +90,7 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1
   # DELETE /groups/1.xml
+  # Attempts to destroy the group given by ID.
   def destroy
     @group = Group.find(params[:id])
     @group.destroy
