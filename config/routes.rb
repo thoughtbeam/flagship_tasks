@@ -9,6 +9,8 @@ Tasks::Application.routes.draw do |map|
 
   resources :groups
 
+  resources :group_users
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

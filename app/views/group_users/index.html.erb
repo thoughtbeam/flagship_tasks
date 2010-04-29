@@ -1,0 +1,27 @@
+<h1>Listing group_users</h1>
+
+<table>
+  <tr>
+    <th>Group</th>
+    <th>User</th>
+    <th>Owner?</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @group_users.each do |group_user| %>
+  <tr>
+    <td><%= group_user.group %></td>
+    <td><%= group_user.user %></td>
+    <td><%= group_user.is_owner %></td>
+    <td><%= link_to 'Show', group_user %></td>
+    <td><%= link_to 'Edit', edit_group_user_path(group_user) %></td>
+    <td><%= link_to 'Destroy', group_user, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Group user', new_group_user_path %>

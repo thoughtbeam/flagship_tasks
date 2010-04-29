@@ -1,0 +1,20 @@
+<p class="notice"><%= notice %></p>
+
+<p>
+  <b>Group:</b>
+  <%= @group_user.group %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @group_user.user %>
+</p>
+
+<p>
+  <b>Is Owner:</b>
+  <%= @group_user.is_owner %>
+</p>
+
+
+<%= link_to 'Edit', edit_group_user_path(@group_user) %> |
+<%= link_to 'Back', group_users_path %>
