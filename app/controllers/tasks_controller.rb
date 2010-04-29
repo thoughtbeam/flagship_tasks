@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.xml
+  # Retrieves a list of the system's tasks.
   def index
     @tasks = Task.all
 
@@ -12,6 +13,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/1
   # GET /tasks/1.xml
+  # Displays the details of the given task.
   def show
     @task = Task.find(params[:id])
 
@@ -23,6 +25,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/new
   # GET /tasks/new.xml
+  # Shows a form to create a new task.
   def new
     @task = Task.new
 
@@ -33,8 +36,11 @@ class TasksController < ApplicationController
   end
 
   # GET /tasks/1/edit
+  # Shows a form to edit the given task.
   def edit
     @task = Task.find(params[:id])
+    # Only allow administrators and group members to edit tasks.
+    # Return others to the task page.
     if !@task.project.group.users.include?(current_user) and !current_user.is_admin
         respond_to do |format|
             format.html { redirect_to(@task, :notice => "You need to be a member of this group to do that.") }
@@ -46,8 +52,11 @@ class TasksController < ApplicationController
 
   # POST /tasks
   # POST /tasks.xml
+  # Receives the form data from the new form.
   def create
     @task = Task.new(params[:task])
+    # Only allow administrators and group members to create tasks.
+    # Return others to the task page.
     if !@task.project.group.users.include?(current_user) and !current_user.is_admin
         respond_to do |format|
             format.html { redirect_to(@task.project, :notice => "You need to be a member of this group to do that.") }
@@ -69,10 +78,14 @@ class TasksController < ApplicationController
 
   # PUT /tasks/1
   # PUT /tasks/1.xml
+  # Receives the output from the edit form. Updates the task
+  # with new data.
   def update
     @task = Task.find(params[:id])
 
     respond_to do |format|
+      # Only group members and administrators can modify tasks.
+      # Return others to the task page.
       if !@task.project.group.users.include?(current_user) and !current_user.is_admin
         format.html { redirect_to(@task, :notice => "You need to be a member of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
@@ -88,8 +101,10 @@ class TasksController < ApplicationController
 
   # DELETE /tasks/1
   # DELETE /tasks/1.xml
+  # Attempts to delete the given task from the database.
   def destroy
     @task = Task.find(params[:id])
+    # Only administrators can completely delete tasks.
     if !current_user or !current_user.is_admin
         respond_to do |format|
             format.html { redirect_to(@task, :notice => "You don't have permission to do that.") }
