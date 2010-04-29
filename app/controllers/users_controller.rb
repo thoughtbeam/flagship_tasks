@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
+  # Retrieves and displays a list of users in the system.
   def index
     @users = User.all
 
@@ -12,6 +13,7 @@ class UsersController < ApplicationController
 
   # GET /users/1
   # GET /users/1.xml
+  # Shows the details about one specific user.
   def show
     @user = User.find(params[:id])
 
@@ -23,6 +25,7 @@ class UsersController < ApplicationController
 
   # GET /users/new
   # GET /users/new.xml
+  # Displays a form to the user to create a new user.
   def new
     @user = User.new
 
@@ -33,12 +36,15 @@ class UsersController < ApplicationController
   end
 
   # GET /users/1/edit
+  # Displays a form to edit a given user.
   def edit
     @user = User.find(params[:id])
   end
 
   # POST /users
   # POST /users.xml
+  # Receives the results of the new form and uses them to
+  # create a new user.
   def create
     @user = User.new(params[:user])
 
@@ -55,6 +61,8 @@ class UsersController < ApplicationController
 
   # PUT /users/1
   # PUT /users/1.xml
+  # Receives the results of the edit form and uses them to
+  # alter the given user.
   def update
     @user = User.find(params[:id])
 
@@ -71,6 +79,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1
   # DELETE /users/1.xml
+  # Attempts to permanently destroy the given user.
   def destroy
     @user = User.find(params[:id])
     @user.destroy
