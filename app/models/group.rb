@@ -6,5 +6,5 @@ class Group < ActiveRecord::Base
         has_many :users, :through => :group_users
 
         # Some users are owners with special priveleges.
-        has_many :owners, :through => :group_users, :source => :user, :conditions => 'is_owner = 1'
+        has_many :owners, :through => :group_users, :source => :user, :conditions => ['is_owner = ?', true]
 end

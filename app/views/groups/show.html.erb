@@ -1,3 +1,4 @@
+<%# Note: we use some helper methods (make_*_link) defined in /app/helpers/groups_helper.rb %>
 <p>
   <b>Name:</b>
   <%= @group.name %>
@@ -36,5 +37,6 @@
 </p>
 
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
+<%= link_to 'Edit', edit_group_path(@group) %> | 
+<%= link_to 'Add a member', new_group_group_user_path(@group) %> |
 <%= link_to 'Back', groups_path %>
