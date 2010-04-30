@@ -63,7 +63,10 @@ class GroupsController < ApplicationController
     @group = Group.new(params[:group])
 
     respond_to do |format|
-      if @group.save
+      if !current_user || (!current_user.is_admin)
+        format.html { redirect_to(@group, :notice => 'No permissions to create groups.')}
+        format.xml { render :xml => @group.errors, :status => :unprocessable_entity }
+      elsif @group.save
         format.html { redirect_to(@group, :notice => 'Group was successfully created.') }
         format.xml  { render :xml => @group, :status => :created, :location => @group }
       else
@@ -81,7 +84,11 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
 
     respond_to do |format|
-      if @group.update_attributes(params[:group])
+      if !current_user || (!current_user.is_admin && !@group.owners.include?(current_user))
+        format.html { redirect_to(@group, :notice => 'No permissions to edit group.')}
+        format.xml { render :xml => @group.errors, :status => :unprocessable_entity }
+
+      elsif @group.update_attributes(params[:group])
         format.html { redirect_to(@group, :notice => 'Group was successfully updated.') }
         format.xml  { head :ok }
       else

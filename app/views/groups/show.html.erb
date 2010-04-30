@@ -1,10 +1,14 @@
 <%# Note: we use some helper methods (make_*_link) defined in /app/helpers/groups_helper.rb %>
+<% @perms =  current_user && (@group.owners.include?(current_user) || current_user.is_admin) %>
 <h1><%= @group.name %></h1>
-<%= link_to 'Edit', edit_group_path(@group) %>
+<% if @perms %>
+  <%= link_to 'Edit', edit_group_path(@group) %>
+<% end %>
 <p><%= @group.name %> is a group of users in Flagship Tasks.</p>
 <p>
   <%= @group.description %>
 </p>
+
 <hr />
 <h2>Projects</h2>
 <% if @projects.nil? || @projects.empty? %>
@@ -16,7 +20,9 @@
   <% end %>
   </ul>
 <% end %>
-<p><%= link_to "Add new project", new_group_project_path(@group) %></p>
+<% if @perms %>
+  <p><%= link_to "Add new project", new_group_project_path(@group) %></p>
+<% end %>
 
 <hr />
 <h2>Membership</h2>
@@ -27,7 +33,12 @@
   <b>Owners (users who control the group):</b>
   <ul>
     <% @owners.each do |u| %>
-      <li><%= link_to u.name, u %> (<%= make_demote_link(@group,u) %>)</li>
+      <li>
+      <%= link_to u.name, u %>
+      <% if @perms %>
+        (<%= make_demote_link(@group,u) %>)
+      <% end %>
+      </li>
     <% end %>
   </ul>
 <% end %>
@@ -40,11 +51,18 @@
   <b>Members:</b>
   <ul>
     <% @users.each do |u| %>
-      <li><%= link_to u.name, u %> (<%= make_owner_link(@group, u) %> | <%= make_remove_link(@group,u) %>) </li>
+      <li>
+      <%= link_to u.name, u %> 
+      <% if @perms %>
+        (<%= make_owner_link(@group, u) %> | <%= make_remove_link(@group,u) %>)
+      <% end %>
+      </li>
     <% end %>
   </ul>
 <% end %>
 </p>
 
 
-<%= link_to 'Add a member', new_group_group_user_path(@group) %>
+<% if @perms %>
+  <%= link_to 'Add a member', new_group_group_user_path(@group) %>
+<% end %>

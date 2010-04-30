@@ -1,15 +1,16 @@
 <h1>Listing groups</h1>
 
 
-
 <% @groups.each do |group| %>
 <h2>
   <%= link_to group.name, group %>
+  <% if current_user && (group.owners.include?(current_user) || current_user.is_admin) %>
   <small>( <%= link_to 'edit', group,:action=>:edit %> )</small>
+  <% end %>
 </h2>
 <p><%= group.description %></p>
   <% unless group.projects.empty? %>
-    <p><strong><%= group.projects.count %>Active Projects</strong></p>
+    <p><strong><%= group.projects.count %> Active Projects</strong></p>
     <ul>
       <% group.projects.each do |p| %>
         <li><%= link_to p.name,[p.group, p] %></li>
@@ -20,4 +21,6 @@
 
 <br />
 
-<%= link_to 'New group', new_group_path %>
+<% if current_user && current_user.is_admin %>
+  <%= link_to 'New group', new_group_path %>
+<% end %>
