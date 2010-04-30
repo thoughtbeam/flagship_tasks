@@ -1,6 +1,3 @@
-<h1>Editing comment</h1>
+<h1>Editing comment on <%=link_to @task.name, [@group,@project,@task] %></h1>
 
 <%= render 'form' %>
-
-<%= link_to 'Show', @comment %> |
-<%= link_to 'Back', comments_path %>

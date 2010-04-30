@@ -1,23 +1,13 @@
-<p class="notice"><%= notice %></p>
-
+<h1>Task: <%= @task.name %></h1>
+<p>In project <%= link_to @project.name, group_project_path(@group, @project) %></p>
 <p>
-  <b>Project:</b>
-  <%= @task.project_id %>
+  <b>Submitter by:</b>
+  <%= @task.submitter.name %>
 </p>
 
 <p>
-  <b>Submitter:</b>
-  <%= @task.submitter_id %>
-</p>
-
-<p>
-  <b>Name:</b>
-  <%= @task.name %>
-</p>
-
-<p>
-  <b>Body:</b>
-  <%= @task.body %>
+  <b>Assigned to:</b>
+  <%= @task.user.nil? ? 'Nobody' : @task.user.name %>
 </p>
 
 <p>
@@ -26,4 +16,24 @@
 </p>
 
 
+<p>
+  <b>Details:</b> <br />
+  <%= @task.body %>
+  </p>
+  <hr>
+  <h2>Comments</h2>
+<% if @task.comments.empty? %>
+  <em>No comments yet.</em>
+<% else %>
+  <% @task.comments.each do |c| %>
+    <p><b><%= c.user.name %> on <%= c.created_at %>:</b><br />
+    <%= raw textilize c.body %>
+    </p> <br/> 
+  <% end %>
+<% end %>
+<br/>
+<% if current_user %>
+  <%= link_to 'Add Comment', new_group_project_task_comment_path(@group, @project, @task) %>
+<% end %>
+<p>
 <%= link_to 'Edit', edit_group_project_task_path(@group, @project, @task) %>

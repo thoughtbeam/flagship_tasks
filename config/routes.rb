@@ -25,15 +25,15 @@ Tasks::Application.routes.draw do |map|
 
     # Within each group, we have projects, which in turn have tasks.
     resources :projects do
-      resources :tasks
+      resources :tasks do 
+        resources :comments
+      end
     end
   end
 
   # A user's login, or session, is represented as a singleton resource.
   # GET /new for login form, POST to /create to login, and DESTROY to logout.
   resource :user_session
-
-  resources :comments
 
   # A user first coming to the site (/) will see the projects listing.
   root :to => "groups#index"
