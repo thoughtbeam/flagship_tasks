@@ -4,6 +4,8 @@ class Task < ActiveRecord::Base
 	# by an anonymous user.
 	belongs_to :project, :touch => true
 	belongs_to :submitter, :class_name => "User"
+        # Each task may have a user.
+        belongs_to :user
 	# Each task can have an unlimited number of comments.
         # These comments are deleted when the task is.
 	has_many :comments, :dependent => :destroy

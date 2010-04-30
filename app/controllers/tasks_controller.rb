@@ -90,7 +90,10 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to([@group, @project], :notice => 'Task was successfully created.') }
+        #alert the assignee.
+        UserMailer.deliver_new_task(@task) unless @task.user.nil?
+
+        format.html { redirect_to([@group, @project], :notice => 'Task was successfully created, and the assignees have been notified.') }
         format.xml  { render :xml => @task, :status => :created, :location => @task }
       else
         format.html { render :action => "new" }

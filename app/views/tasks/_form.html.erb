@@ -10,7 +10,7 @@
   </div>
   <% end %>
 
-  <% if @task.project.group.users.include?(current_user) or current_user.is_admin %>
+  <% if current_user.is_admin %>
   <div class="field">
     <%= f.label :submitter_id %><br />
     <%= f.collection_select(:submitter_id, User.all, :id, :alphaname, :include_blank => '') %>
@@ -25,12 +25,17 @@
     <%= f.label :body %><br />
     <%= f.text_area :body %>
   </div>
-  <% if @task.project.group.users.include?(current_user) or current_user.is_admin %>
+  <% if @task.project.group.owners.include?(current_user) or current_user.is_admin %>
   <div class="field">
     <%= f.label :status %><br />
     <%= f.select(:status, @task.statuses.values) %>
   </div>
   <% end %>
+  <div class="field">
+    <%= f.label :user %><br />
+    <%= f.collection_select(:user_id, User.all, :id, :alphaname, :include_blank => 'None') %>
+  </div>
+ 
   <div class="actions">
     <%= f.submit %>
   </div>

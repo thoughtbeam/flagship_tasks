@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
 	# Keep track of all tasks this user has submitted.
 	has_many :submitted_tasks, :class_name => "Task", :foreign_key => "submitter_id"
+        # Keep track of tasks assigned to the user.
+        has_many :users
 	# Additionally, track comments this user has posted.
 	has_many :comments
 
