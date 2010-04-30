@@ -2,6 +2,8 @@
 # that will take action and choose what to display.
 
 Tasks::Application.routes.draw do |map|
+  resources :comments
+
   # Each entry maps create, read, update, and delete routes for
   #   the corresponding controller.
   resources :tasks
