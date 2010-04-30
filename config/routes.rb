@@ -34,7 +34,7 @@ Tasks::Application.routes.draw do |map|
   resource :user_session
 
   # A user first coming to the site (/) will see the projects listing.
-  root :to => "projects#index"
+  root :to => "groups#index"
 
   # See how all your routes lay out with "rake routes"
 
