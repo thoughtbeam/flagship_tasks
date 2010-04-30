@@ -50,6 +50,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        @user.deliver_validation
         format.html { redirect_to(@user, :notice => 'User was successfully created.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
@@ -87,6 +88,18 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(users_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  # /validate?token=:code
+  def validate
+    @user = User.find_by_perishable_token(params[:token])
+    
+    if @user.nil?
+      redirect_to root_url, :notice => "Validation failed. Please try again."
+     else
+      @user.update_attribute(:activated, true)
+      redirect_to root_url, :notice => "Validation successful. Welcome!"
     end
   end
 end
