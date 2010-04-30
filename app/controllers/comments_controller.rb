@@ -71,7 +71,7 @@ class CommentsController < ApplicationController
       # Comments can only be edited by the submitter (if not anonymous) and administrators.
       if !current_user or (!current_user.is_admin and @comment.user != current_user)
         format.html { redirect_to(@comment, :notice => 'You must be the poster of this comment or an administrator to edit it.') }
-        format.xml { status => :unprocessable_entity }
+        format.xml { :status => :unprocessable_entity }
       elsif @comment.update_attributes(params[:comment])
         format.html { redirect_to(@comment, :notice => 'Comment was successfully updated.') }
         format.xml  { head :ok }
