@@ -1,6 +1,9 @@
-<h1>Editing project</h1>
+<h1>
+  Editing Project <%= link_to @project.name, [@group, @project] %>
+  in <%= link_to @group.name, @group %>
+</h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @project %> |
-<%= link_to 'Back', projects_path %>
+<%= link_to 'Show', [@group, @project] %> |
+<%= link_to 'Back', group_projects_path(@group) %>

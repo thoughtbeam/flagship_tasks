@@ -7,4 +7,7 @@ class Group < ActiveRecord::Base
 
         # Some users are owners with special priveleges.
         has_many :owners, :through => :group_users, :source => :user, :conditions => ['is_owner = ?', true]
+
+        # Order alphabetically by default.
+        default_scope :order => 'name'
 end

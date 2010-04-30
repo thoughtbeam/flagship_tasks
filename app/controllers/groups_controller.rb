@@ -21,6 +21,9 @@ class GroupsController < ApplicationController
     @users = @group.users
     @owners = @group.owners
 
+    # and projects, too.
+    @projects = @group.projects
+
     # Don't need to display an owner as a user, too!
     @users.delete_if { |u| @owners.include? u }
 

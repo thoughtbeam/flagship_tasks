@@ -1,9 +1,20 @@
 class ProjectsController < ApplicationController
+  # Anything to do with a project is done in the context of a group.
+  # First thing to do is to fetch the @group.
+  before_filter :get_group
+
+  # Figure out the current group based on the url. This will be provided
+  # as @group, and the collection of projects will be @parent.
+  def get_group
+    @group = Group.find(params[:group_id])
+    @parent = @group.projects
+  end
+  
   # GET /projects
   # GET /projects.xml
   # Lists all projects in the system.
   def index
-    @projects = Project.all
+    @projects = @parent.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,7 +26,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1.xml
   # Gives the full details for a single project given by ID.
   def show
-    @project = Project.find(params[:id])
+    @project = @parent.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -27,7 +38,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new.xml
   # Displays a form for creating a new project to the user.
   def new
-    @project = Project.new
+    @project = @parent.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,7 +49,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   # Displays a form for editing a project to the user.
   def edit
-    @project = Project.find(params[:id])
+    @project = @parent.find(params[:id])
     # Only the owners of the project's group and administrators
     # can modify projects. Fail gracefully if the user is not allowed.
     if !@project.group.owners.include?(current_user) and !current_user.is_admin
@@ -54,16 +65,18 @@ class ProjectsController < ApplicationController
   # POST /projects.xml
   # Accepts the results of the new form to create a new project.
   def create
-    @project = Project.new(params[:project])
+    @project = @parent.new(params[:project])
+    logger.info "OH MY FUCING GOD!!!!" if @project.nil?
+    logger.info @project
 
     # Only group owners and administrators can create projects assigned
     # to that group. Fail gracefully if the user is not allowed.
     respond_to do |format|
       if !@project.group.owners.include?(current_user) and !current_user.is_admin
-        format.html { redirect_to(@task, :notice => "You need to be an owner of this group to do that.") }
+        format.html { redirect_to(@project.group, :notice => "You need to be an owner of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
       elsif @project.save
-        format.html { redirect_to(@project, :notice => 'Project was successfully created.') }
+        format.html { redirect_to([@group, @project], :notice => 'Project was successfully created.') }
         format.xml  { render :xml => @project, :status => :created, :location => @project }
       else
         format.html { render :action => "new" }
@@ -77,7 +90,7 @@ class ProjectsController < ApplicationController
   # Accepts the results of the edit form and attempts to modify the
   # given project.
   def update
-    @project = Project.find(params[:id])
+    @project = @parent.find(params[:id])
 
     respond_to do |format|
       # Only the owners of the project's group and administrators can
@@ -86,7 +99,7 @@ class ProjectsController < ApplicationController
         format.html { redirect_to(@task, :notice => "You need to be an owner of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
       elsif @project.update_attributes(params[:project])
-        format.html { redirect_to(@project, :notice => 'Project was successfully updated.') }
+        format.html { redirect_to([@group, @project], :notice => 'Project was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -112,7 +125,7 @@ class ProjectsController < ApplicationController
     @project.destroy
 
     respond_to do |format|
-      format.html { redirect_to(projects_url) }
+      format.html { redirect_to(group_url(@group)) }
       format.xml  { head :ok }
     end
   end

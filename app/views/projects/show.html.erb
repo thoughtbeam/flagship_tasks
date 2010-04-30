@@ -1,20 +1,10 @@
 <p class="notice"><%= notice %></p>
 
-<p>
-  <b>Group:</b>
-  <%= @project.group_id %>
-</p>
+<h1><%= @project.name %></h1>
+<p>A project managed by <%= link_to @group.name, @group %>
+<% unless @project.active %>
+  <p><em>This project is currently inactive.</em></p>
+<% end %>
 
-<p>
-  <b>Name:</b>
-  <%= @project.name %>
-</p>
-
-<p>
-  <b>Active:</b>
-  <%= @project.active %>
-</p>
-
-
-<%= link_to 'Edit', edit_project_path(@project) %> |
-<%= link_to 'Back', projects_path %>
+<br />
+<%= link_to 'Edit', edit_group_project_path(@group, @project) %>

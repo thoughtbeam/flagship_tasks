@@ -1,15 +1,25 @@
 <%# Note: we use some helper methods (make_*_link) defined in /app/helpers/groups_helper.rb %>
+<h1><%= @group.name %></h1>
+<%= link_to 'Edit', edit_group_path(@group) %>
+<p><%= @group.name %> is a group of users in Flagship Tasks.</p>
 <p>
-  <b>Name:</b>
-  <%= @group.name %>
-</p>
-
-<p>
-  <b>Description:</b>
   <%= @group.description %>
 </p>
+<hr />
+<h2>Projects</h2>
+<% if @projects.nil? || @projects.empty? %>
+  <em>This group has no projects.</em>
+<% else %>
+  <ul>
+  <% @projects.each do |p| %>
+    <li><%= link_to p.name, p %>
+  <% end %>
+  </ul>
+<% end %>
+<p><%= link_to "Add new project", new_group_project_path(@group) %></p>
 
-
+<hr />
+<h2>Membership</h2>
 <p>
 <% if @owners.nil? || @owners.empty? %>
   <em>This group has no owners.</em>
@@ -37,6 +47,4 @@
 </p>
 
 
-<%= link_to 'Edit', edit_group_path(@group) %> | 
-<%= link_to 'Add a member', new_group_group_user_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+<%= link_to 'Add a member', new_group_group_user_path(@group) %>

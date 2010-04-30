@@ -1,24 +1,22 @@
 <h1>Listing groups</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+
 
 <% @groups.each do |group| %>
-  <tr>
-    <td><%= group.name %></td>
-    <td><%= group.description %></td>
-    <td><%= link_to 'Show', group %></td>
-    <td><%= link_to 'Edit', edit_group_path(group) %></td>
-    <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+<h2>
+  <%= link_to group.name, group %>
+  <small>( <%= link_to 'edit', group,:action=>:edit %> )</small>
+</h2>
+<p><%= group.description %></p>
+  <% unless group.projects.empty? %>
+    <p><strong><%= group.projects.count %>Active Projects</strong></p>
+    <ul>
+      <% group.projects.each do |p| %>
+        <li><%= link_to p.name,p %></li>
+      <% end %>
+    </ul>
+  <% end %>
 <% end %>
-</table>
 
 <br />
 

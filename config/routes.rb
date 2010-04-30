@@ -1,17 +1,17 @@
 # This file is responsible for the mapping of URLs to the controllers
 # that will take action and choose what to display.
+# This application has a nested structure, with many resources being
+# applicable only in the context of a parent resource.
 
 Tasks::Application.routes.draw do |map|
-  resources :comments
 
-  # Each entry maps create, read, update, and delete routes for
-  #   the corresponding controller.
-  resources :tasks
-  resources :projects
+  # Each 'resources' maps create, read, update, and delete routes for
+  #   the corresponding controller. We nest
+
   resources :users
 
   # Groups are a little more complex. They have the same basic
-  # structure, but we have a sub-resource, which has special actoins
+  # structure, but have sub-resources, one of which has special actions
   # for ownership management.
   resources :groups do
     # group_users are accessed at /group/:id/group_users/:join_id
@@ -20,6 +20,13 @@ Tasks::Application.routes.draw do |map|
       post :promote, :on => :member
       post :demote, :on => :member
     end
+
+    # Within each group, we have projects, which in turn have tasks.
+    resources :projects do
+      resources :tasks
+    end
+     
+          
   end
 
   # A user's login, or session, is represented as a singleton resource.

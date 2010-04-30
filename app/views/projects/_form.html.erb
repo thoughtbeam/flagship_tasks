@@ -1,4 +1,4 @@
-<%= form_for(@project) do |f| %>
+<%= form_for([@group, @project]) do |f| %>
   <% if @project.errors.any? %>
   <div id="errorExplanation">
     <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
@@ -10,10 +10,6 @@
   </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :group_id %><br />
-    <%= f.text_field :group_id %>
-  </div>
   <div class="field">
     <%= f.label :name %><br />
     <%= f.text_field :name %>
