@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
           reset_perishable_token!  
 
           # Now, send it to the user.
-          UserMailer.activation(self)
+          UserMailer.deliver_activation(self)
         end
 
         # Tell the login system the user is not activated if the activated

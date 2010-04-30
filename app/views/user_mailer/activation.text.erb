@@ -1,4 +1,4 @@
 Welcome! 
-Thank you for registering for Flagship Tasks. You can verify your account by following this link:
+Thank you for registering for Flagship Tasks. You can verify your account with this code:
 
-<%= link_to @url, @url %>
+<%= link_to @user.perishable_token, validate_users_url(@user, :host=>"http://dev.studentsenate.rpi.edu/ditorm/tasks/", :token=>@user.perishable_token) %>

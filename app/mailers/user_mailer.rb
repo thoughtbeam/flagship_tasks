@@ -7,7 +7,7 @@ class UserMailer < ActionMailer::Base
   #   en.actionmailer.user_mailer.activation.subject
   #
   def activation(user)
-    @url = user.perishable_token
+    @user = user
 
     mail :to => user.email
   end
