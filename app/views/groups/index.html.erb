@@ -12,7 +12,7 @@
     <p><strong><%= group.projects.count %>Active Projects</strong></p>
     <ul>
       <% group.projects.each do |p| %>
-        <li><%= link_to p.name,p %></li>
+        <li><%= link_to p.name,[p.group, p] %></li>
       <% end %>
     </ul>
   <% end %>

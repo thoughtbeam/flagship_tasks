@@ -12,7 +12,7 @@
 <% else %>
   <ul>
   <% @projects.each do |p| %>
-    <li><%= link_to p.name, p %>
+    <li><%= link_to p.name, [p.group, p] %></li>
   <% end %>
   </ul>
 <% end %>

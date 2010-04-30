@@ -1,9 +1,21 @@
 class TasksController < ApplicationController
+  # Anything to do with a project is done in the context of a group.
+  # First thing to do is to fetch the @group and @project
+  before_filter :get_project
+
+  # Figure out the current group based on the url. This will be provided
+  # as @group, and the collection of projects will be @parent.
+  def get_project
+    @group = Group.find(params[:group_id])
+    @project = Project.find(params[:group_id])
+    @parent = @project.tasks
+  end
+
   # GET /tasks
   # GET /tasks.xml
   # Retrieves a list of the system's tasks.
   def index
-    @tasks = Task.all
+    @tasks = @parent.all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,7 +39,7 @@ class TasksController < ApplicationController
   # GET /tasks/new.xml
   # Shows a form to create a new task.
   def new
-    @task = Task.new
+    @task = @parent.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -38,7 +50,7 @@ class TasksController < ApplicationController
   # GET /tasks/1/edit
   # Shows a form to edit the given task.
   def edit
-    @task = Task.find(params[:id])
+    @task = @parent.find(params[:id])
     # Only allow administrators and group members to edit tasks.
     # Return others to the task page.
     if !@task.project.group.users.include?(current_user) and !current_user.is_admin
@@ -54,7 +66,7 @@ class TasksController < ApplicationController
   # POST /tasks.xml
   # Receives the form data from the new form.
   def create
-    @task = Task.new(params[:task])
+    @task = @parent.new(params[:task])
     # Only allow administrators and group members to create tasks.
     # Return others to the task page.
     if !@task.project.group.users.include?(current_user) and !current_user.is_admin
@@ -67,7 +79,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to(@task, :notice => 'Task was successfully created.') }
+        format.html { redirect_to([@group, @project, @task], :notice => 'Task was successfully created.') }
         format.xml  { render :xml => @task, :status => :created, :location => @task }
       else
         format.html { render :action => "new" }
@@ -81,16 +93,16 @@ class TasksController < ApplicationController
   # Receives the output from the edit form. Updates the task
   # with new data.
   def update
-    @task = Task.find(params[:id])
+    @task = @parent.find(params[:id])
 
     respond_to do |format|
       # Only group members and administrators can modify tasks.
       # Return others to the task page.
       if !@task.project.group.users.include?(current_user) and !current_user.is_admin
-        format.html { redirect_to(@task, :notice => "You need to be a member of this group to do that.") }
+        format.html { redirect_to([@group, @project], :notice => "You need to be a member of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
       elsif @task.update_attributes(params[:task])
-        format.html { redirect_to(@task, :notice => 'Task was successfully updated.') }
+        format.html { redirect_to([@group, @project, @task], :notice => 'Task was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

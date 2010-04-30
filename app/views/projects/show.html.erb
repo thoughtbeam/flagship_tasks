@@ -6,5 +6,18 @@
   <p><em>This project is currently inactive.</em></p>
 <% end %>
 
+<h2>Tasks</h2>
+<% if @tasks.nil? || @tasks.empty? %>
+  <em>This project has no tasks.</em>
+<% else %>
+  <ul>
+  <% @tass.each do |t| %>
+    <li><%= link_to t.name, t %>
+  <% end %>
+  </ul>
+<% end %>
+<p><%= link_to "Add new task", new_group_project_task_path(@group,@project) %></p>
+
 <br />
-<%= link_to 'Edit', edit_group_project_path(@group, @project) %>
+<%= link_to 'Edit', edit_group_project_path(@group, @project) %> |
+<%= link_to 'Destroy', group_project_path(@group, @project), :method => :delete %>
