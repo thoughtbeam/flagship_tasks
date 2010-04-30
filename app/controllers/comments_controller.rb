@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.xml
+  # Retrieves a list of all comments in the system.
   def index
     @comments = Comment.all
 
@@ -12,6 +13,8 @@ class CommentsController < ApplicationController
 
   # GET /comments/1
   # GET /comments/1.xml
+  # Retrieves a specific comment given by ID and
+  # displays its details.
   def show
     @comment = Comment.find(params[:id])
 
@@ -23,6 +26,7 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   # GET /comments/new.xml
+  # Offers a form that creates a new comment.
   def new
     @comment = Comment.new
 
@@ -33,12 +37,15 @@ class CommentsController < ApplicationController
   end
 
   # GET /comments/1/edit
+  # Offers a form that modifies an existing comment.
   def edit
     @comment = Comment.find(params[:id])
   end
 
   # POST /comments
   # POST /comments.xml
+  # Receives the results of the new form and actually creates
+  # the new comment and saves it.
   def create
     @comment = Comment.new(params[:comment])
 
@@ -55,6 +62,8 @@ class CommentsController < ApplicationController
 
   # PUT /comments/1
   # PUT /comments/1.xml
+  # Receives the results of the edit form and actually updates
+  # the comment data.
   def update
     @comment = Comment.find(params[:id])
 
@@ -71,8 +80,16 @@ class CommentsController < ApplicationController
 
   # DELETE /comments/1
   # DELETE /comments/1.xml
+  # Attempts to destroy the comment given by ID.
   def destroy
     @comment = Comment.find(params[:id])
+    if !current_user or !current_user.is_admin
+       respond_to do |format|
+          format.html { redirect_to(@comment, :notice => 'You must be an administrator to delete comments.') }
+          format.xml { :status => :unprocessable_entity }
+       end
+       return
+    end
     @comment.destroy
 
     respond_to do |format|
