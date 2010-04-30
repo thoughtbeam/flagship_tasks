@@ -47,11 +47,12 @@ class UsersController < ApplicationController
   # create a new user.
   def create
     @user = User.new(params[:user])
+    @user.activated = false
 
     respond_to do |format|
       if @user.save
         @user.deliver_validation
-        format.html { redirect_to(@user, :notice => 'User was successfully created.') }
+        format.html { redirect_to(root_url, :notice => 'Thank you for registering! You will recieve an email with instructions to activate shortly.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else
         format.html { render :action => "new" }

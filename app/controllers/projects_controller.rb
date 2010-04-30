@@ -28,6 +28,8 @@ class ProjectsController < ApplicationController
   def show
     @project = @parent.find(params[:id])
 
+    @tasks = @project.tasks
+
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @project }

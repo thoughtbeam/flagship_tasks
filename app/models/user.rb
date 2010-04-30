@@ -49,6 +49,6 @@ class User < ActiveRecord::Base
           activated == true
         end
 
-        default_scope :conditions => { :activated => true }
+        #default_scope :conditions => { :activated => true }
 
 end

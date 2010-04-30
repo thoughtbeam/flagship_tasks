@@ -7,7 +7,7 @@ class TasksController < ApplicationController
   # as @group, and the collection of projects will be @parent.
   def get_project
     @group = Group.find(params[:group_id])
-    @project = Project.find(params[:group_id])
+    @project = Project.find(params[:project_id])
     @parent = @project.tasks
   end
 
@@ -67,6 +67,17 @@ class TasksController < ApplicationController
   # Receives the form data from the new form.
   def create
     @task = @parent.new(params[:task])
+
+    # Set submitter
+    if(!current_user.is_admin)
+      @task.submitter=current_user
+    end
+
+    # Set status if nesc.
+    if(!current_user.is_admin && !@task.project.group.owners.include?(current_user))
+      @task.status='Unverified'
+    end
+
     # Only allow administrators and group members to create tasks.
     # Return others to the task page.
     if !@task.project.group.users.include?(current_user) and !current_user.is_admin
@@ -79,7 +90,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to([@group, @project, @task], :notice => 'Task was successfully created.') }
+        format.html { redirect_to([@group, @project], :notice => 'Task was successfully created.') }
         format.xml  { render :xml => @task, :status => :created, :location => @task }
       else
         format.html { render :action => "new" }
@@ -102,7 +113,7 @@ class TasksController < ApplicationController
         format.html { redirect_to([@group, @project], :notice => "You need to be a member of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
       elsif @task.update_attributes(params[:task])
-        format.html { redirect_to([@group, @project, @task], :notice => 'Task was successfully updated.') }
+        format.html { redirect_to([@group, @project], :notice => 'Task was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -119,7 +130,7 @@ class TasksController < ApplicationController
     # Only administrators can completely delete tasks.
     if !current_user or !current_user.is_admin
         respond_to do |format|
-            format.html { redirect_to(@task, :notice => "You don't have permission to do that.") }
+            format.html { redirect_to([@group, @project], :notice => "You don't have permission to do that.") }
             format.xml { render :status => :unprocessable_entity }
         end
         return

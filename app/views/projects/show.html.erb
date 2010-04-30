@@ -11,13 +11,27 @@
   <em>This project has no tasks.</em>
 <% else %>
   <ul>
-  <% @tass.each do |t| %>
-    <li><%= link_to t.name, t %>
+  <% @tasks.each do |t| %>
+    <li>
+      <%= link_to t.name, [@group, @project, t] %>
+      (<%= t.status %>)
+      (
+      <% if current_user && (current_user.is_admin || @group.owners.include?(current_user)) %>
+        <%= link_to 'edit', edit_group_project_task_path(@group, @project, t) %> | <%= link_to 'delete', group_project_task_path(@group, @project, t), :method => :delete %>
+      <% end %>
+      )
+        </li>
   <% end %>
   </ul>
 <% end %>
-<p><%= link_to "Add new task", new_group_project_task_path(@group,@project) %></p>
+<% if current_user && @project.group.users.include?(current_user) %>
+  <p><%= link_to "Add new task", new_group_project_task_path(@group,@project) %></p> 
+<% end %>
+<% if current_user && (current_user.is_admin || @group.owners.include?(current_user)) %>
+  <p><%= link_to 'Edit Project Info', edit_group_project_path(@group, @project) %>
+  </p>
+<% end %>
 
-<br />
-<%= link_to 'Edit', edit_group_project_path(@group, @project) %> |
-<%= link_to 'Destroy', group_project_path(@group, @project), :method => :delete %>
+<% if current_user && current_user.is_admin %>
+  <%= link_to 'Destroy', group_project_path(@group, @project), :method => :delete %>
+<% end %>
