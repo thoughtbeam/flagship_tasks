@@ -4,6 +4,8 @@ class Task < ActiveRecord::Base
 	# by an anonymous user.
 	belongs_to :project, :touch => true
 	belongs_to :submitter, :class_name => "User"
+	# Each task can have an unlimited number of comments.
+	has_many :comments
 	# Each task must belong to a project.
 	validates :project_id, :presence => true
 	# The status must be one of:
