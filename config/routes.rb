@@ -6,9 +6,11 @@
 Tasks::Application.routes.draw do |map|
 
   # Each 'resources' maps create, read, update, and delete routes for
-  #   the corresponding controller. We nest
+  #   the corresponding controller. We nest for context.
 
-  resources :users
+  resources :users do
+      get :validate, :on => :collection
+  end
 
   # Groups are a little more complex. They have the same basic
   # structure, but have sub-resources, one of which has special actions
@@ -25,13 +27,13 @@ Tasks::Application.routes.draw do |map|
     resources :projects do
       resources :tasks
     end
-     
-          
   end
 
   # A user's login, or session, is represented as a singleton resource.
   # GET /new for login form, POST to /create to login, and DESTROY to logout.
   resource :user_session
+
+  resources :comments
 
   # A user first coming to the site (/) will see the projects listing.
   root :to => "groups#index"

@@ -26,10 +26,12 @@
     <%= f.label :email %><br />
     <%= f.text_field :email %>
   </div>
+  <% if current_user && current_user.is_admin %>
   <div class="field">
     <%= f.label :is_admin %><br />
     <%= f.check_box :is_admin %>
   </div>
+  <% end %>
    <div class="field">
     <%= f.label :password %><br />
     <%= f.password_field :password %>

@@ -20,6 +20,12 @@ class Task < ActiveRecord::Base
 	# Constant dictionary indicating the human-readable definitions of 
 	# the five different statuses.
 	Statuses = {-1 => "Invalid", 0 => "Unverified", 1 => "Accepted", 2 => "In Progress", 3 => "Done" }
+
+  # convient method to access the array externally (for forms).
+  def statuses
+    Statuses
+  end
+
 	# Retrieves the human-readable definition of this task's status.
 	def status (status = nil)
 		return Statuses[self.status_id]

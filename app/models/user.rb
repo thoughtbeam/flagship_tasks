@@ -8,13 +8,15 @@ class User < ActiveRecord::Base
         has_many :group_users
         has_many :groups, :through => :group_users
 
-        # We don't want to register the same user id twice.
-        validates_uniqueness_of :username
-
         # Require valid email and name
         validates_presence_of :first
         validates_presence_of :last
         validates_presence_of :email
+        validates_presence_of :username
+
+        # We don't want to register the same user id or email twice.
+        validates_uniqueness_of :username
+        validates_uniqueness_of :email
 
         # Provide default ordering for views
         default_scope :order => 'last, first'
@@ -31,5 +33,22 @@ class User < ActiveRecord::Base
         def alphaname
           last + ", " + first
         end
+
+        # Do the mailer, set the token.
+        def deliver_validation
+          # First, we need a token (done by authlogic)
+          reset_perishable_token!  
+
+          # Now, send it to the user.
+          UserMailer.activation(self)
+        end
+
+        # Tell the login system the user is not activated if the activated
+        # column has not been set.
+        def active?
+          activated == true
+        end
+
+        default_scope :conditions => { :activated => true }
 
 end

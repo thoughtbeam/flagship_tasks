@@ -9,7 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100428161932) do
+ActiveRecord::Schema.define(:version => 20100430071015) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "task_id"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "group_users", :force => true do |t|
     t.integer  "group_id"
@@ -55,6 +63,8 @@ ActiveRecord::Schema.define(:version => 20100428161932) do
     t.string   "crypted_password"
     t.string   "password_salt"
     t.string   "persistence_token"
+    t.string   "perishable_token"
+    t.boolean  "activated"
   end
 
 end
