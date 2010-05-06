@@ -12,7 +12,12 @@
   <% @tasks.each do |t| %>
     <li>
       <%= link_to t.name, [@group, @project, t] %>
-      (<%= t.status %>)
+      (
+      <%= t.status %>
+      <% unless t.user.nil? %>
+      : <%= link_to t.user.name, t.user %>
+      <% end %>
+      )
       (
       <% if current_user && (current_user.is_admin || @group.owners.include?(current_user)) %>
         <%= link_to 'edit', edit_group_project_task_path(@group, @project, t) %> 

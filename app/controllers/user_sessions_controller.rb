@@ -37,7 +37,7 @@ class UserSessionsController < ApplicationController
     @user_session = UserSession.new(params[:user_session])
 
     if @user_session.save
-      redirect_to(root_path, :notice => "Login successful!") 
+      redirect_to(@user_session.user, :notice => "Login successful. Welcome!") 
     else
       render :action => "new" 
     end

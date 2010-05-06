@@ -1,28 +1,53 @@
+<h1>User Details</h1>
 <p>
   <b>Username:</b>
   <%= @user.username %>
 </p>
 
 <p>
-  <b>First:</b>
-  <%= @user.first %>
-</p>
-
-<p>
-  <b>Last:</b>
-  <%= @user.last %>
+  <b>Name:</b>
+  <%= @user.name %>
 </p>
 
 <p>
   <b>Email:</b>
   <%= @user.email %>
 </p>
-
+<% if @user.is_admin %>
 <p>
-  <b>Is admin:</b>
-  <%= @user.is_admin %>
+  <b>This user is an administrator.</b>
 </p>
+<% end %>
 
+<br />
+<h1><%= @user.first %>'s Current Tasks</h1>
+<ul>
+<% has_tasks = false %>
+<% Group.all.each do |g| %>
+  <% g.projects.each do |p| %>
+    <% n = p.tasks.where('status_id >= 0 AND status_id <= 2').where(['user_id=?',@user.id]).count %>
+    <% if n > 0 %>
+      <% has_tasks = true %>
+      <li><%= link_to g.name+" / "+p.name, [g,p] %>: <%= n %> open task<%= if n>1 then 's' end %> for <%= @user.first %></li>
+    <% end %>
+  <% end %>
+<% end %>
+</ul>
+<% unless has_tasks  %>
+<p><em>This user has no open tasks assigned to them. </em></p>
+<% end %>
+
+<br />
+<h1><%= @user.first %>'s Groups</h1>
+<% if @user.groups.nil? || @user.groups.empty?  %>
+  <p><em>This user belongs to no groups. </em></p>
+<% else %>
+  <ul>
+  <% @user.groups.each do |g| %>
+    <li><%= link_to g.name, g %></li>
+  <% end %>
+  </ul>
+<% end %>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
