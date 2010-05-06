@@ -10,15 +10,12 @@ class User < ActiveRecord::Base
         has_many :group_users
         has_many :groups, :through => :group_users
 
-        # Require valid email and name
+        # We will want to verify some of the properties of the user.
+        # Note that a number of validations, including email and username
+        # presence and uniqueness, are included automatically by 
+        # acts_as_authentic, below.
         validates_presence_of :first
         validates_presence_of :last
-        validates_presence_of :email
-        validates_presence_of :username
-
-        # We don't want to register the same user id or email twice.
-        validates_uniqueness_of :username
-        validates_uniqueness_of :email
 
         # Provide default ordering for views
         default_scope :order => 'last, first'
