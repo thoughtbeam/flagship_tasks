@@ -94,10 +94,14 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        #alert the assignee.
-        UserMailer.deliver_new_task(@task) unless @task.user.nil?
+        #alert the assignee, if there is one and it has an email
+        sent = ""
+        unless @task.user.nil? or @task.user.email.nil?
+          UserMailer.deliver_new_task(@task)
+          sent = ", and the assignee has been notified"
+	end
 
-        format.html { redirect_to([@group, @project], :notice => 'Task was successfully created, and the assignees have been notified.') }
+        format.html { redirect_to([@group, @project], :notice => 'Task was successfully created' + sent +'.') }
         format.xml  { render :xml => @task, :status => :created, :location => @task }
       else
         format.html { render :action => "new" }
