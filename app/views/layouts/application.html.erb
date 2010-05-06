@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Groups: <%= controller.action_name %></title>
+  <%# Make pretty title with correct pluralization (controller_name is plural) %>
+  <% if params[:id] %>
+    <title>Flagship Tasks: <%= controller.controller_name.singularize.titleize %> Page</title>
+  <% else %>
+    <title>Flagship Tasks: <%= controller.controller_name.titleize %></title>
+  <% end %>
+  
   <%= stylesheet_link_tag 'scaffold' %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
