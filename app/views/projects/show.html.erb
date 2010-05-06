@@ -27,14 +27,15 @@
   <% end %>
   </ul>
 <% end %>
-<% if current_user && @project.group.users.include?(current_user) %>
-  <p><%= link_to "Add new task", new_group_project_task_path(@group,@project) %></p> 
+<p>
+<% if current_user && (current_user.is_admin || @project.group.users.include?(current_user)) %>
+  <%= link_to "Add new task", new_group_project_task_path(@group,@project) %> 
 <% end %>
 <% if current_user && (current_user.is_admin || @group.owners.include?(current_user)) %>
-  <p><%= link_to 'Edit Project Info', edit_group_project_path(@group, @project) %>
-  </p>
+  | <%= link_to 'Edit Project Info', edit_group_project_path(@group, @project) %>
 <% end %>
 
 <% if current_user && current_user.is_admin %>
-  <%= link_to 'Destroy', group_project_path(@group, @project), :method => :delete %>
+  | <%= link_to 'Delete Project', group_project_path(@group, @project), :method => :delete, :confirm => "Are you sure you want to delete the project?" %>
 <% end %>
+</p>

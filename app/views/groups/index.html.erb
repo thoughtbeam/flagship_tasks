@@ -5,7 +5,7 @@
 <h2>
   <%= link_to group.name, group %>
   <% if current_user && (group.owners.include?(current_user) || current_user.is_admin) %>
-  <small>( <%= link_to 'edit', group,:action=>:edit %> )</small>
+  <small>( <%= link_to 'edit', edit_group_path(group) %> )</small>
   <% end %>
 </h2>
 <p><%= group.description %></p>
