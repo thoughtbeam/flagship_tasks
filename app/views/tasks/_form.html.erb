@@ -32,7 +32,7 @@
   </div>
   <% end %>
   <div class="field">
-    <%= f.label :user %><br />
+    <%= f.label :assigned_to %><br />
     <%= f.collection_select(:user_id, User.all, :id, :alphaname, :include_blank => 'None') %>
   </div>
  

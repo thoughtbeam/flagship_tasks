@@ -41,6 +41,10 @@ class TasksController < ApplicationController
   def new
     @task = @parent.new
 
+    # Mark the user. If not an admin, this will be overwritten in create.
+    # For admins, they will be themselves by default but get to pick someone else.
+    @task.submitter = current_user
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @task }
