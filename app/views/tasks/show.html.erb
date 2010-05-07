@@ -1,7 +1,7 @@
 <h1>Task: <%= @task.name %></h1>
 <p>In project <%= link_to @project.name, group_project_path(@group, @project) %></p>
 <p>
-  <b>Submitter by:</b>
+  <b>Submitted by:</b>
   <%= @task.submitter.name %>
 </p>
 
