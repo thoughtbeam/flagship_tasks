@@ -44,7 +44,8 @@
 <% else %>
   <ul>
   <% @user.groups.each do |g| %>
-    <li><%= link_to g.name, g %></li>
+    <li><%= link_to g.name, g %>
+    <% if g.owners.include?(@user) %><small>(owner)</small><% end %></li>
   <% end %>
   </ul>
 <% end %>
