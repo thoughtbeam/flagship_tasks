@@ -1,8 +1,8 @@
-<p>This is a notification that a new task has been submitted for you on Flagship Tasks! </p>
+<p>This is a notification that a task that is assigned to you has been updated on Flagship Tasks! </p>
 
 <p>Read more about the task and keep track of your progress by following the link below:<br/>
 <strong>Task:</strong> <%= link_to @task.name, group_project_task_url(@task.project.group, @task.project, @task) %> <br />
 <strong>Project:</strong> <%= link_to @task.project.name, group_project_url(@task.project.group, @task.project) %><br />
 <strong>Status:</strong> <%= @task.status  %><br />
 <strong>Submitted by:</strong> <%= @task.submitter.name %> <br />
-
+</p>

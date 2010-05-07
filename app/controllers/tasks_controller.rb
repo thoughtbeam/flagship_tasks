@@ -124,7 +124,14 @@ class TasksController < ApplicationController
         format.html { redirect_to([@group, @project], :notice => "You need to be a member of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
       elsif @task.update_attributes(params[:task])
-        format.html { redirect_to([@group, @project], :notice => 'Task was successfully updated.') }
+        #alert the assignee, if there is one and it has an email
+        sent = ""
+        unless @task.user.nil? or @task.user.email.nil?
+          UserMailer.deliver_updated_task(@task)
+          sent = ", and the assignee has been notified"
+	end
+
+        format.html { redirect_to([@group, @project, @task], :notice => "Task was successfully updated#{sent}.") }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
