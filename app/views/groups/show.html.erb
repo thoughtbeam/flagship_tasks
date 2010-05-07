@@ -35,7 +35,7 @@
     <% @owners.each do |u| %>
       <li>
       <%= link_to u.name, u %>
-      <% if @perms %>
+      <% if @perms and u != current_user %>
         (<%= make_demote_link(@group,u) %>)
       <% end %>
       </li>
@@ -53,8 +53,8 @@
     <% @users.each do |u| %>
       <li>
       <%= link_to u.name, u %> 
-      <% if @perms %>
-        (<%= make_owner_link(@group, u) %> | <%= make_remove_link(@group,u) %>)
+      <% if @perms or u == current_user %>
+        (<%= make_owner_link(@group, u) if @perms %> | <%= make_remove_link(@group,u) %>)
       <% end %>
       </li>
     <% end %>
