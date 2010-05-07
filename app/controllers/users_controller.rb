@@ -84,7 +84,7 @@ class UsersController < ApplicationController
       redirect_to @user, :notice => "You cannot edit that user."
       return
     end
-    if current_user == @user and current_user.is_admin != (params[:user][:is_admin] == "1")
+    if params[:user][:is_admin] and current_user == @user and current_user.is_admin != (params[:user][:is_admin] == "1")
       @user.errors.add(:is_admin, "cannot be changed on your own profile.")
     end
 
