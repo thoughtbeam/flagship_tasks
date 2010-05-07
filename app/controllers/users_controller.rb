@@ -43,6 +43,10 @@ class UsersController < ApplicationController
   # Displays a form to edit a given user.
   def edit
     @user = User.find(params[:id])
+    if current_user.nil? or (!current_user.is_admin and current_user != @user)
+      redirect_to @user, :notice => "You cannot edit that user."
+      return
+    end
   end
 
   # POST /users
@@ -76,8 +80,16 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
 
+    if current_user.nil? or (!current_user.is_admin and current_user != @user)
+      redirect_to @user, :notice => "You cannot edit that user."
+      return
+    end
+    if current_user == @user and current_user.is_admin != (params[:user][:is_admin] == "1")
+      @user.errors.add(:is_admin, "cannot be changed on your own profile.")
+    end
+
     respond_to do |format|
-      if @user.update_attributes(params[:user])
+      if @user.errors.empty? and @user.update_attributes(params[:user])
         format.html { redirect_to(@user, :notice => 'User was successfully updated.') }
         format.xml  { head :ok }
       else
@@ -92,6 +104,10 @@ class UsersController < ApplicationController
   # Attempts to permanently destroy the given user.
   def destroy
     @user = User.find(params[:id])
+    if current_user.nil? or !current_user.is_admin or current_user == @user
+      redirect_to root_url, :notice => "You do not have permission to delete that user."
+      return
+    end
     @user.destroy
 
     respond_to do |format|

@@ -20,8 +20,16 @@
     <td><%= user.email %></td>
     <td><%= user.is_admin %></td>
     <td><%= link_to 'Show', user %></td>
+<% if !current_user.nil? and (current_user.is_admin or current_user == user) %>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
+<% else %>
+    <td></td>
+<% end %>
+<% if !current_user.nil? and current_user.is_admin and current_user != user %>
     <td><%= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete %></td>
+<% else %>
+    <td></td>
+<% end %>
   </tr>
 <% end %>
 </table>
