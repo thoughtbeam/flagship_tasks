@@ -33,7 +33,7 @@
   <% end %>
   <div class="field">
     <%= f.label :assigned_to %><br />
-    <%= f.collection_select(:user_id, User.all, :id, :alphaname, :include_blank => 'None') %>
+    <%= f.collection_select(:user, User.all, :id, :alphaname, :include_blank => 'None') %>
   </div>
  
   <div class="actions">
