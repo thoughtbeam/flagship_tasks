@@ -26,9 +26,20 @@
   <em>No comments yet.</em>
 <% else %>
   <% @task.comments.each do |c| %>
-    <p><b><%= c.user.name %> on <%= c.created_at %>:</b><br />
+    <p><b><%= c.user.name %> on <%= c.created_at %>:</b>
+    <% if current_user and (c.user == current_user or current_user.is_admin) %>
+      <small>(
+      <%= link_to 'edit', edit_group_project_task_comment_path(@group, @project, @task, c) %>
+      <% if current_user.is_admin %>
+        | <%= link_to 'destroy', group_project_task_comment_path(@group, @project, @task, c), :method => :delete %>
+      <% end %>)</small>
+    <% end %>
+    <br />
     <%= raw textilize c.body %>
-    </p> <br/> 
+    <% if c.created_at != c.updated_at %>
+      <small>(Last edited on <%= c.updated_at %>)</small>
+    <% end %>
+    </p><br /> 
   <% end %>
 <% end %>
 <br/>
