@@ -1,4 +1,6 @@
 .bundle
+config/environment.rb
+public/.htaccess
 db/*.sqlite3
 log/*.log
 tmp/**/*

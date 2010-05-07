@@ -1,0 +1,21 @@
+= Flagship Tasks
+
+Flagship Tasks is a web app written in Ruby on Rails by the ThoughtBeam team.
+
+Flagship Tasks is a project management framework, but it was built to be more than just another bug list, to be accessible to users of all professions and competence levels, for re-quirements ranging from the standard software development project bug list to a personal, day-to-day to-do list. Flagship Tasks can handle tasks from any sort of system.
+
+Flagship Tasks provides a simple and clean user interface that will help you get it up and running quickly. Unlike other systems, which often require substantial amounts of editing con-figuration files, Flagship Tasks can serve itself right out of the box with little to no configuration at all. And when you need the extra speed of a full-size web server, Flagship Tasks can easily step it up with Apache and Passenger or other equivalent Rack server.
+
+Flagship Tasks can make organizing a snap, whether it comes to projects or people. Just assign your users into groups and let them work, undisturbed by other teams’ progress. It’s great for times when a particular set of users will be working together on various projects frequently.
+
+We at ThoughtBeam hope that Flagship Tasks makes your next project a lot easier. Give it a try!
+
+== More Information
+
+This document accompanies the first major release, version 1.0. For the most up-to-date installation instructions, see our wiki at http://wiki.github.com/thoughtbeam/flagship_tasks/installation. The Flagship Tasks code repository can be found at http://github.com/thoughtbeam/flagship_tasks.
+
+The full documentation can be found here: http://github.com/thoughtbeam/flagship_tasks/downloads
+
+== About Us
+
+Thoughtbeam (Mike, Mike, and Haris) is a group of Students participating in Software, Design, and Documentation and Rensselaer Polytechnic Institute.
