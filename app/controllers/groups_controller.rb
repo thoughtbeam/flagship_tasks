@@ -21,14 +21,12 @@ class GroupsController < ApplicationController
     @users = @group.users
     @owners = @group.owners
 
-    # and projects, too.
-    @projects = @group.projects
-
     # Don't need to display an owner as a user, too!
     @users.delete_if { |u| @owners.include? u }
 
     # We'll also want to display our projects.
-    @projects = @group.projects
+    @projects = @group.active_projects
+    @inactive_projects = @group.inactive_projects
 
 
     respond_to do |format|
@@ -108,6 +106,13 @@ class GroupsController < ApplicationController
     if !current_user or !current_user.is_admin
         respond_to do |format|
             format.html { redirect_to(@group, :notice => "You don't have permission to do that.") }
+            format.xml { render :status => :unprocessable_entity }
+        end
+        return
+    end
+    if !@group.projects.empty?
+        respond_to do |format|
+            format.html { redirect_to(@group, :notice => "You can't delete a group that owns projects.") }
             format.xml { render :status => :unprocessable_entity }
         end
         return

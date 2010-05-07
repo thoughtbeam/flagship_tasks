@@ -97,11 +97,16 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       # Only the owners of the project's group and administrators can
       # modify a project. Fail gracefully if the user is not allowed.
-      if !@project.group.owners.include?(current_user) and !current_user.is_admin
+      newgroup = @group
+      if params[:project][:group_id] and @project.group_id != params[:project][:group_id].to_i
+        newgroup = Group.find(params[:project][:group_id].to_i)
+        @project.errors.add(:group_id, "can only be changed by admins") unless current_user and current_user.is_admin
+      end  
+      if !current_user or (!@project.group.owners.include?(current_user) and !current_user.is_admin)
         format.html { redirect_to(@project, :notice => "You need to be an owner of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
-      elsif @project.update_attributes(params[:project])
-        format.html { redirect_to([@group, @project], :notice => 'Project was successfully updated.') }
+      elsif @project.errors.empty? and @project.update_attributes(params[:project])
+        format.html { redirect_to([newgroup, @project], :notice => 'Project was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

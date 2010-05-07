@@ -10,15 +10,27 @@
 </p>
 
 <hr />
-<h2>Projects</h2>
+<h2>Active Projects</h2>
 <% if @projects.nil? || @projects.empty? %>
-  <em>This group has no projects.</em>
+  <em>This group has no active projects.</em>
 <% else %>
   <ul>
   <% @projects.each do |p| %>
     <li><%= link_to p.name, [p.group, p] %></li>
   <% end %>
   </ul>
+<% end %>
+<% if current_user and (current_user.is_admin or @owners.include?(current_user)) %>
+  <h3>Inactive Projects</h3>
+  <% if @inactive_projects.nil? || @inactive_projects.empty? %>
+    <small><em>This group has no inactive projects.</em></small>
+  <% else %>
+    <ul>
+    <% @inactive_projects.each do |p| %>
+      <li><small><%= link_to p.name, [p.group, p] %></small></li>
+    <% end %>
+    </ul>
+  <% end %>
 <% end %>
 <% if @perms %>
   <p><%= link_to "Add new project", new_group_project_path(@group) %></p>
@@ -54,7 +66,7 @@
       <li>
       <%= link_to u.name, u %> 
       <% if @perms or u == current_user %>
-        (<%= make_owner_link(@group, u) if @perms %> | <%= make_remove_link(@group,u) %>)
+        (<% if @perms %><%= make_owner_link(@group, u) %> | <% end %><%= make_remove_link(@group,u) %>)
       <% end %>
       </li>
     <% end %>

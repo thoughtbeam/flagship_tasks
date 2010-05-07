@@ -9,13 +9,23 @@
   <% end %>
 </h2>
 <p><%= group.description %></p>
-  <% unless group.projects.empty? %>
-    <p><strong><%= group.projects.count %> Active Projects</strong></p>
+  <% unless group.active_projects.empty? %>
+    <p><strong><%= group.active_projects.count %> Active Projects</strong></p>
     <ul>
-      <% group.projects.each do |p| %>
+      <% group.active_projects.each do |p| %>
         <li><%= link_to p.name,[p.group, p] %></li>
       <% end %>
     </ul>
+  <% end %>
+  <% if current_user and (current_user.is_admin or group.owners.include?(current_user)) %>
+    <% unless group.inactive_projects.empty? %>
+      <p><strong><%= group.inactive_projects.count %> Inactive Projects</strong></p>
+      <ul>
+        <% group.inactive_projects.each do |p| %>
+          <li><%= link_to p.name,[p.group, p] %></li>
+        <% end %>
+      </ul>
+    <% end %>
   <% end %>
 <% end %>
 
