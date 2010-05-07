@@ -1,11 +1,15 @@
+# This class is used to send email to  auser about various system events,
+# such as new user verification, or task assignments.
 class UserMailer < ActionMailer::Base
-  default :from => "from@example.com"
+  # Note that the :host option that determines the base URL for all 
+  # requests is set in ApplicationController based on the host of the
+  # most recent request.
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.actionmailer.user_mailer.activation.subject
-  #
+  # We will send the mail from a fake address.
+  # The domain used will be the HTTP address of the server.
+  # The best way to get this without destroying encapsulation is to use
+  # the same host as the :host option.
+  default :from => "no-reply@" + ActionMailer::Base.default_url_options[:host].gsub(/\/.*/, '')
 
   # How we send the mail to the user that verifies their email
   # and lets them verify their account.

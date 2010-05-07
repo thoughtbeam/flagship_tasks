@@ -1,7 +1,5 @@
 This is a notification that a new task has been submitted for you on flagship! <br />
 
 Read more on the website for details:
-<% default_url_options[:host] = "http://dev.studentsenate.rpi.edu/ditorm/tasks/" %>
-<%= link_to (@task.name, group_project_task_url(@task.project.group, @task.project, @task, :host =>"dev.studentsenate.rpi.edu/ditorm/tasks/")) %> 
-
+<%= link_to @task.name, group_project_task_url(@task.project.group, @task.project, @task) %> 
 
