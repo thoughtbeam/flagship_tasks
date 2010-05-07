@@ -98,7 +98,7 @@ class ProjectsController < ApplicationController
       # Only the owners of the project's group and administrators can
       # modify a project. Fail gracefully if the user is not allowed.
       if !@project.group.owners.include?(current_user) and !current_user.is_admin
-        format.html { redirect_to(@task, :notice => "You need to be an owner of this group to do that.") }
+        format.html { redirect_to(@project, :notice => "You need to be an owner of this group to do that.") }
         format.xml { render :status => :unprocessable_entity }
       elsif @project.update_attributes(params[:project])
         format.html { redirect_to([@group, @project], :notice => 'Project was successfully updated.') }
