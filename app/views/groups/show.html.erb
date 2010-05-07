@@ -3,6 +3,9 @@
 <h1><%= @group.name %></h1>
 <% if @perms %>
   <%= link_to 'Edit', edit_group_path(@group) %>
+  <% if (@projects.nil? or @projects.empty?) and (@inactive_projects.nil? or @inactive_projects.empty?) %>
+   | <%= link_to 'Destroy', @group, :confirm => 'Are you sure?', :method => :delete %>
+  <% end %>
 <% end %>
 <p><%= @group.name %> is a group of users in Flagship Tasks.</p>
 <p>
