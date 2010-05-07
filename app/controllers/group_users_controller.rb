@@ -155,7 +155,7 @@ class GroupUsersController < ApplicationController
        redirect_to @group, :notice => "You cannot remove an owner from a group."
        return
     end
-    if !@group.owners.include?(current_user) and @user != current_user
+    if (!current_user.is_admin and !@group.owners.include?(current_user)) and @user != current_user
        redirect_to @group, :notice => "You cannot remove that user from this group."
        return
     end
