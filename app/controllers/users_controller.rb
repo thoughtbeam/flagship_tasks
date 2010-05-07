@@ -27,6 +27,10 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   # Displays a form to the user to create a new user.
   def new
+    unless current_user_session.nil?
+      redirect_to root_url, :notice => "You are already logged in."
+      return
+    end
     @user = User.new
 
     respond_to do |format|
@@ -46,6 +50,10 @@ class UsersController < ApplicationController
   # Receives the results of the new form and uses them to
   # create a new user.
   def create
+    unless current_user_session.nil?
+      redirect_to root_url, :notice => "You are already logged in."
+      return
+    end
     @user = User.new(params[:user])
     @user.activated = false
 

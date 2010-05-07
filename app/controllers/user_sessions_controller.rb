@@ -2,6 +2,11 @@ class UserSessionsController < ApplicationController
   # GET /user_session/new
   # Offers a form to create a new user session, i.e. log in.
   def new
+    unless current_user_session.nil?
+      redirect_to root_url, :notice => "You are already logged in."
+      return
+    end
+
     @user_session = UserSession.new
 
     respond_to do |format|
@@ -13,6 +18,10 @@ class UserSessionsController < ApplicationController
   # POST /user_session
   # Creates a new user session, i.e. logs in.
   def create
+    unless current_user_session.nil?
+      redirect_to root_url, :notice => "You are already logged in."
+      return
+    end
     @user_session = UserSession.new(params[:user_session])
 
     if @user_session.save
