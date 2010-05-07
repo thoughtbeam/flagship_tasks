@@ -37,7 +37,7 @@ class GroupUsersController < ApplicationController
     # Make the blank group_user a member of this group (via @parent)
     @group_user = @parent.new
     
-    if !current_user or (!current_user.is_admin and !group.owners.include?(current_user))
+    if !current_user or (!current_user.is_admin and !@group.owners.include?(current_user))
        redirect_to @group, :notice => "You cannot add users to that group."
        return
     end
@@ -62,7 +62,7 @@ class GroupUsersController < ApplicationController
     # Create the new user, given the params, but already a member of the group
     @group_user = @parent.new(params[:group_user])
 
-    if !current_user or (!current_user.is_admin and !group.owners.include?(current_user))
+    if !current_user or (!current_user.is_admin and !@group.owners.include?(current_user))
        redirect_to @group, :notice => "You cannot add users to that group."
        return
     end
@@ -84,7 +84,7 @@ class GroupUsersController < ApplicationController
   def promote
     @group_user = @parent.find(params[:id]) #get the record
 
-    if !current_user or (!current_user.is_admin and !group.owners.include?(current_user))
+    if !current_user or (!current_user.is_admin and !@group.owners.include?(current_user))
        redirect_to @group, :notice => "You cannot update users in that group."
        return
     end
@@ -107,7 +107,7 @@ class GroupUsersController < ApplicationController
   def demote
     @group_user = @parent.find(params[:id]) #get the record
 
-    if !current_user or (!current_user.is_admin and !group.owners.include?(current_user)) or current_user == @group_user.user
+    if !current_user or (!current_user.is_admin and !@group.owners.include?(current_user)) or current_user == @group_user.user
        redirect_to @group, :notice => "You cannot demote that user."
        return
     end
@@ -147,7 +147,7 @@ class GroupUsersController < ApplicationController
   def destroy
     @group_user = @parent.find(params[:id])
     @user = @group_user.user
-    if !current_user or (!current_user.is_admin and !group.users.include?(current_user))
+    if !current_user or (!current_user.is_admin and !@group.users.include?(current_user))
        redirect_to @group, :notice => "You cannot remove users from that group."
        return
     end
@@ -155,7 +155,7 @@ class GroupUsersController < ApplicationController
        redirect_to @group, :notice => "You cannot remove an owner from a group."
        return
     end
-    if !groups.owners.include?(current_user) and @user != current_user
+    if !@group.owners.include?(current_user) and @user != current_user
        redirect_to @group, :notice => "You cannot remove that user from this group."
        return
     end
