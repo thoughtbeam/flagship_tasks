@@ -63,7 +63,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        @user.deliver_validation
+        @user.deliver_validation(mailer_data)
         format.html { redirect_to(root_url, :notice => 'Thank you for registering! You will recieve an email with instructions to activate shortly.') }
         format.xml  { render :xml => @user, :status => :created, :location => @user }
       else

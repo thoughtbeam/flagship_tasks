@@ -97,7 +97,7 @@ class TasksController < ApplicationController
         #alert the assignee, if there is one and it has an email
         sent = ""
         unless @task.user.nil? or @task.user.email.nil?
-          UserMailer.deliver_new_task(@task)
+          UserMailer.deliver_new_task(@task, mailer_data)
           sent = ", and the assignee has been notified"
 	end
 
@@ -127,7 +127,7 @@ class TasksController < ApplicationController
         #alert the assignee, if there is one and it has an email
         sent = ""
         unless @task.user.nil? or @task.user.email.nil?
-          UserMailer.deliver_updated_task(@task)
+          UserMailer.deliver_updated_task(@task, mailer_data)
           sent = ", and the assignee has been notified"
 	end
 

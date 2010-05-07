@@ -34,12 +34,13 @@ class User < ActiveRecord::Base
         end
 
         # Do the mailer, set the token.
-        def deliver_validation
+        # Mailer data is a hash with some env data for the mailer.
+        def deliver_validation(mailer_data)
           # First, we need a token (done by authlogic)
           reset_perishable_token!  
 
           # Now, send it to the user.
-          UserMailer.deliver_activation(self)
+          UserMailer.deliver_activation(self, mailer_data)
         end
 
         # Tell the login system the user is not activated if the activated
