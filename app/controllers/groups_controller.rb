@@ -103,6 +103,15 @@ class GroupsController < ApplicationController
   # Attempts to destroy the group given by ID.
   def destroy
     @group = Group.find(params[:id])
+    # Only administrators can permanently delete groups.
+    # Fail gracefully if the user is not allowed.
+    if !current_user or !current_user.is_admin
+        respond_to do |format|
+            format.html { redirect_to(@group, :notice => "You don't have permission to do that.") }
+            format.xml { render :status => :unprocessable_entity }
+        end
+        return
+    end
     @group.destroy
 
     respond_to do |format|
