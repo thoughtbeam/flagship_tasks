@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   # the user accesses the site through an http proxy.
   def set_mail_host
     myhost =  request.env['HTTP_X_FORWARDED_HOST'] || request.host 
-    ActionMailer::Base.default_url_options[:host] =  myhost + ENV['RAILS_RELATIVE_URL_ROOT']
+    ActionMailer::Base.default_url_options[:host] =  myhost + (ENV['RAILS_RELATIVE_URL_ROOT'] || "")
 #    ActionMailer::Base.default[:from] = "no-reply@"+(request.host)
   end
 
